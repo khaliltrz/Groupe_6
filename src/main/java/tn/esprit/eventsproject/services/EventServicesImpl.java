@@ -74,7 +74,20 @@ public class EventServicesImpl implements IEventServices{
       }
         return logisticsRepository.save(logistics);
     }
+    @Override
+    public List<Logistics> getLogisticsDates(LocalDate date_debut, LocalDate date_fin) {
+        List<Event> events = eventRepository.findByDateDebutBetween(date_debut, date_fin);
 
+        List<Logistics> logisticsList = new ArrayList<>();
+        for (Event event : events) {
+            if (!event.getLogistics().isEmpty()) {
+                logisticsList.addAll(event.getLogistics());
+            }
+        }
+        return logisticsList;
+    }
+
+    /*
     @Override
     public List<Logistics> getLogisticsDates(LocalDate date_debut, LocalDate date_fin) {
         List<Event> events = eventRepository.findByDateDebutBetween(date_debut, date_fin);
@@ -95,7 +108,7 @@ public class EventServicesImpl implements IEventServices{
             }
         }
         return logisticsList;
-    }
+    }*/
 
     @Scheduled(cron = "*/60 * * * * *")
     @Override
